@@ -2,9 +2,11 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import cn from 'classnames'
+import { Navigate } from 'react-router-dom'
 
 import Loader from '../Loader/Loader'
 import { updateUser } from '../../service/platformAPI'
+import { signIn } from '../Route/Route'
 
 import classes from './UserForms.module.scss'
 
@@ -14,6 +16,7 @@ const Profile = () => {
   const user = useSelector((state) => state.user.user)
   const loading = useSelector((state) => state.user.loading)
   const error = useSelector((state) => state.user.error)
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
 
   const {
     register,
@@ -43,7 +46,12 @@ const Profile = () => {
     }
   }, [error])
 
+  if (isLoggedIn === false) {
+    return <Navigate to={signIn} />
+  }
+
   const onSubmit = (data) => {
+    console.log(data, 'dataProfile')
     const newData = Object.fromEntries(Object.entries(data).filter(([, value]) => value.trim().length))
     dispatch(updateUser(newData))
   }

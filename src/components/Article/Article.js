@@ -6,6 +6,7 @@ import { useParams } from 'react-router'
 import Item from '../Item/Item'
 import Loader from '../Loader/Loader'
 import { fetchArticle } from '../../service/platformAPI'
+import NotFound from '../NotFound/NotFound'
 
 import classes from './Article.module.scss'
 
@@ -15,12 +16,17 @@ const Article = () => {
 
   const { article } = useSelector((state) => state.article)
   const loading = useSelector((state) => state.article.loading)
+  const error = useSelector((state) => state.article.error)
 
   useEffect(() => {
     if (slug) {
       dispatch(fetchArticle(slug))
     }
   }, [slug])
+
+  if (error) {
+    return <NotFound message={error.message} code={error.code} />
+  }
 
   return (
     <div className={classes.article}>

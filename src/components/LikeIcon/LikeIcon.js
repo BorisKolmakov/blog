@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { favoriteArticle, unfavoriteArticle } from '../../service/platformAPI'
+import NotFound from '../NotFound/NotFound'
 
 import classes from './LikeIcon.module.scss'
 
 const LikeIcon = ({ favorited, slug, count }) => {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+  const error = useSelector((state) => state.user.error)
   const [likesCounter, setLikesCounter] = useState(0)
   const [isClicked, setIsClicked] = useState(favorited)
 
@@ -23,6 +25,10 @@ const LikeIcon = ({ favorited, slug, count }) => {
       setLikesCounter((likes) => likes - 1)
       dispatch(unfavoriteArticle(slug))
     }
+  }
+
+  if (error) {
+    return <NotFound message={error.message} code={error.code} />
   }
 
   return (

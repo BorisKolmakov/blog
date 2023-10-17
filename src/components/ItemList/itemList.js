@@ -6,6 +6,7 @@ import { Pagination } from 'antd'
 import Item from '../Item/Item'
 import Loader from '../Loader/Loader'
 import { fetchArticles } from '../../service/platformAPI'
+import NotFound from '../NotFound/NotFound'
 
 import classes from './ItemList.module.scss'
 
@@ -18,8 +19,10 @@ const ItemList = () => {
 
   const total = useSelector((state) => state.list.total)
   const loading = useSelector((state) => state.list.loading)
+  const error = useSelector((state) => state.list.error)
 
   const items = useSelector((state) => state.list.articles)
+
   const elements = items.map((item) => (
     <li key={`${item.slug}${item.favoritesCount}`}>
       <Item article={item} isFull={false} />
@@ -33,6 +36,10 @@ const ItemList = () => {
   useEffect(() => {
     dispatch(fetchArticles(offset))
   }, [offset])
+
+  if (error) {
+    return <NotFound message={error.message} code={error.code} />
+  }
 
   return (
     <>

@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+const baseUrl = 'https://blog.kata.academy/api'
+
 export const fetchArticle = createAsyncThunk('article/fetchArticle', async (slug) => {
   try {
     const res = await axios.get(`https://blog.kata.academy/api/articles/${slug}`, {
@@ -11,6 +13,9 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (slug
     })
     return res.data.article
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
@@ -18,7 +23,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (slug
 export const createArticle = createAsyncThunk('article/createArticle', async (data) => {
   try {
     const res = await axios.post(
-      'https://blog.kata.academy/api/articles',
+      `${baseUrl}/articles`,
       {
         article: data.article,
       },
@@ -31,6 +36,9 @@ export const createArticle = createAsyncThunk('article/createArticle', async (da
     )
     return res.data.article
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
@@ -38,7 +46,7 @@ export const createArticle = createAsyncThunk('article/createArticle', async (da
 export const updateArticle = createAsyncThunk('article/updateArticle', async (data) => {
   try {
     const res = await axios.put(
-      `https://blog.kata.academy/api/articles/${data.slug}`,
+      `${baseUrl}/articles/${data.slug}`,
       {
         article: data.article,
       },
@@ -51,13 +59,16 @@ export const updateArticle = createAsyncThunk('article/updateArticle', async (da
     )
     return res.data
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
 
 export const deleteArticle = createAsyncThunk('article/deleteArticle', async (slug) => {
   try {
-    const res = await axios.delete(`https://blog.kata.academy/api/articles/${slug}`, {
+    const res = await axios.delete(`${baseUrl}/articles/${slug}`, {
       headers: {
         Authorization: `Token ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
@@ -65,6 +76,9 @@ export const deleteArticle = createAsyncThunk('article/deleteArticle', async (sl
     })
     return res.data
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
@@ -72,7 +86,7 @@ export const deleteArticle = createAsyncThunk('article/deleteArticle', async (sl
 export const favoriteArticle = createAsyncThunk('article/favoriteArticle', async (slug) => {
   try {
     const res = await axios.post(
-      `https://blog.kata.academy/api/articles/${slug}/favorite`,
+      `${baseUrl}/articles/${slug}/favorite`,
       {
         body: '',
       },
@@ -85,13 +99,16 @@ export const favoriteArticle = createAsyncThunk('article/favoriteArticle', async
     )
     return res.data
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
 
 export const unfavoriteArticle = createAsyncThunk('article/unfavoriteArticle', async (slug) => {
   try {
-    const res = await axios.delete(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
+    const res = await axios.delete(`${baseUrl}/articles/${slug}/favorite`, {
       headers: {
         Authorization: `Token ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
@@ -105,7 +122,7 @@ export const unfavoriteArticle = createAsyncThunk('article/unfavoriteArticle', a
 
 export const fetchArticles = createAsyncThunk('list/fetchArticles', async (offset) => {
   try {
-    const res = await axios.get(`https://blog.kata.academy/api/articles?limit=5&offset=${offset}`, {
+    const res = await axios.get(`${baseUrl}/articles?limit=5&offset=${offset}`, {
       headers: {
         Authorization: `Token ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
@@ -113,13 +130,16 @@ export const fetchArticles = createAsyncThunk('list/fetchArticles', async (offse
     })
     return res.data
   } catch (err) {
+    if (err.response) {
+      return Promise.reject(err)
+    }
     throw new Error(err)
   }
 })
 
 export const fetchRegistration = createAsyncThunk('user/fetchRegistration', async (data, { rejectWithValue }) => {
   try {
-    const res = await axios.post('https://blog.kata.academy/api/users', data)
+    const res = await axios.post(`${baseUrl}/users`, data)
     localStorage.setItem('token', res.data.user.token)
     return res.data
   } catch (err) {
@@ -129,7 +149,7 @@ export const fetchRegistration = createAsyncThunk('user/fetchRegistration', asyn
 
 export const fetchLogin = createAsyncThunk('user/fetchLogin', async (data, { rejectWithValue }) => {
   try {
-    const res = await axios.post('https://blog.kata.academy/api/users/login', data)
+    const res = await axios.post(`${baseUrl}/users/login`, data)
     localStorage.setItem('token', res.data.user.token)
     return res.data
   } catch (err) {
@@ -138,12 +158,13 @@ export const fetchLogin = createAsyncThunk('user/fetchLogin', async (data, { rej
 })
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  const res = await axios.get('https://blog.kata.academy/api/user', {
+  const res = await axios.get(`${baseUrl}/user`, {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
   })
+  console.log(res.data, 'fetchUserApi')
   return res.data
 })
 
@@ -159,6 +180,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (data, { rej
         },
       }
     )
+    console.log(res.data, 'updateUserApi')
     return res.data
   } catch (err) {
     return rejectWithValue(err.response.data.errors)

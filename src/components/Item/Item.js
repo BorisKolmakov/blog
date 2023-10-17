@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Tag, Popconfirm, message } from 'antd'
 import { format } from 'date-fns'
@@ -7,6 +7,8 @@ import { format } from 'date-fns'
 import LikeIcon from '../LikeIcon/LikeIcon'
 import userAvatar from '../../assets/img/userAvatar.svg'
 import { deleteArticle } from '../../service/platformAPI'
+import { itemList } from '../Route/Route'
+import NotFound from '../NotFound/NotFound'
 
 import classes from './Item.module.scss'
 
@@ -15,15 +17,21 @@ const Item = ({ article, isFull }) => {
   const navigate = useNavigate()
 
   const userName = useSelector((state) => state.user.user.username)
-  const slug = useSelector((state) => state.article.slug)
+  const error = useSelector((state) => state.user.error)
+  const { slug } = useParams()
+  const articlePath = `/articles/${article.slug}`
 
   const formatDate = (date) => format(new Date(date), 'LLLL d, yyyy')
 
   const onConfirm = () => {
     dispatch(deleteArticle(slug)).then(() => {
       message.success('Article has been deleted')
-      navigate('/articles')
+      navigate(`${itemList}`)
     })
+  }
+
+  if (error) {
+    return <NotFound message={error.message} code={error.code} />
   }
 
   return (
@@ -31,7 +39,7 @@ const Item = ({ article, isFull }) => {
       <section className={classes.section}>
         <div className={classes.info}>
           <h2 className={classes.title}>
-            <Link to={`/articles/${article.slug}`}>{article.title}</Link>
+            <Link to={articlePath}>{article.title}</Link>
           </h2>
           <LikeIcon favorited={article.favorited} slug={article.slug} count={article.favoritesCount} />
         </div>

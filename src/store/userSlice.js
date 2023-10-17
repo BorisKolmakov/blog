@@ -25,25 +25,30 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchRegistration.fulfilled, (state, action) => {
       state.user = action.payload.user
-      state.error = null
       state.isLoggedIn = true
     })
     builder.addCase(fetchRegistration.rejected, (state, action) => {
       state.error = action.payload
+      state.error = action.error
     })
 
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
       state.user = action.payload.user
-      state.error = null
       state.isLoggedIn = true
     })
     builder.addCase(fetchLogin.rejected, (state, action) => {
-      state.error = action.payload
+      state.error = action.error
+      state.isLoggedIn = true
     })
 
     builder.addCase(fetchUser.fulfilled, (state, action) => {
+      console.log(action.payload.user, 'fetchUser')
       state.user = action.payload.user
       state.isLoggedIn = true
+      state.loading = false
+    })
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.error = action.error
       state.loading = false
     })
 
@@ -51,6 +56,7 @@ const userSlice = createSlice({
       state.loading = true
     })
     builder.addCase(updateUser.fulfilled, (state, action) => {
+      console.log(action.payload.user, 'updateUser')
       state.user = action.payload.user
       state.error = null
       state.loading = false

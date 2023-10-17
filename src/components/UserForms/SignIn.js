@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 
 import { fetchLogin, fetchArticles } from '../../service/platformAPI'
+import { itemList } from '../Route/Route'
 
 import classes from './UserForms.module.scss'
 
@@ -28,7 +29,7 @@ const SignIn = () => {
     }
     if (!error && isLoggedIn) {
       dispatch(fetchArticles(0))
-      navigate('/articles')
+      navigate(`${itemList}`)
     }
   }, [error, isLoggedIn])
 
