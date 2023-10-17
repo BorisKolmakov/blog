@@ -5,6 +5,7 @@ import { message } from 'antd'
 import cn from 'classnames'
 
 import { createArticle, updateArticle } from '../../service/platformAPI'
+import { itemList, signIn } from '../Route/Route'
 
 import classes from './UserForms.module.scss'
 
@@ -35,19 +36,19 @@ const CreateArticle = ({ edit = false, defaultValues = { title: '', description:
     if (slug) {
       dispatch(updateArticle(newData)).then(() => {
         message.success('Статья обновлена')
-        navigate('/articles')
+        navigate(`${itemList}`)
       })
     }
     if (!slug) {
       dispatch(createArticle(newData)).then(() => {
         message.success('Статья создана')
-        navigate('/articles')
+        navigate(`${itemList}`)
       })
     }
   }
 
   if (!localStorage.getItem('token')) {
-    return <Navigate to="/sign-in" />
+    return <Navigate to={`${signIn}`} />
   }
 
   return (

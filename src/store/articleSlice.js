@@ -4,6 +4,7 @@ import { fetchArticle, createArticle, updateArticle } from '../service/platformA
 
 const initialState = {
   loading: true,
+  error: '',
   article: {
     author: {
       username: '',
@@ -29,15 +30,22 @@ const articleSlice = createSlice({
       state.article = action.payload
       state.loading = false
     })
-    builder.addCase(fetchArticle.pending, (state) => {
+    builder.addCase(fetchArticle.pending, (state, action) => {
       state.loading = true
+      state.error = action.payload
     })
-
+    builder.addCase(fetchArticle.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.error
+    })
     builder.addCase(createArticle.fulfilled, (state) => {
       state.loading = false
     })
     builder.addCase(createArticle.pending, (state) => {
       state.loading = true
+    })
+    builder.addCase(createArticle.rejected, (state, action) => {
+      state.error = action.error
     })
 
     builder.addCase(updateArticle.fulfilled, (state) => {
@@ -45,6 +53,9 @@ const articleSlice = createSlice({
     })
     builder.addCase(updateArticle.pending, (state) => {
       state.loading = true
+    })
+    builder.addCase(updateArticle.rejected, (state, action) => {
+      state.error = action.error
     })
   },
 })

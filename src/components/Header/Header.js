@@ -5,6 +5,8 @@ import { useEffect } from 'react'
 import { setsIsLoggedOut } from '../../store/userSlice'
 import { fetchUser } from '../../service/platformAPI'
 import defaultAvatar from '../../assets/img/userAvatar.svg'
+import { itemList, signIn, signUp, profile, newArticle } from '../Route/Route'
+import NotFound from '../NotFound/NotFound'
 
 import classes from './header.module.scss'
 
@@ -15,6 +17,7 @@ const Header = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
   const username = useSelector((state) => state.user.user.username)
   const avatar = useSelector((state) => state.user.user.image)
+  const error = useSelector((state) => state.user.error)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -24,17 +27,17 @@ const Header = () => {
 
   const onLogOut = () => {
     dispatch(setsIsLoggedOut())
-    navigate('/sign-in')
+    navigate(`${signIn}`)
     localStorage.removeItem('token')
   }
   const loggedIn = (
     <>
-      <Link to="/new-article">
+      <Link to={newArticle}>
         <button className={`${classes.btn} ${classes['btn--green']}`} type="button">
           Create article
         </button>
       </Link>
-      <Link to="/profile">
+      <Link to={profile}>
         <span className={classes.username}>{username}</span>
         <img className={classes.avatar} src={avatar ? avatar : defaultAvatar} alt="avatar" />
       </Link>
@@ -46,21 +49,26 @@ const Header = () => {
 
   const loggedOut = (
     <>
-      <Link to="/sign-in">
+      <Link to={signIn}>
         <button className={`${classes.btn} ${classes['btn--sign-in']}`} type="button">
           Sign In
         </button>
       </Link>
-      <Link to="/sign-up">
+      <Link to={signUp}>
         <button className={`${classes.btn} ${classes['btn--green']}`} type="button">
           Sign Up
         </button>
       </Link>
     </>
   )
+
+  if (error) {
+    return <NotFound message={error.message} code={error.code} />
+  }
+
   return (
     <header className={classes.header}>
-      <Link to="/articles">
+      <Link to={itemList}>
         <button className={classes.btn} type="button">
           Realworld Blog
         </button>

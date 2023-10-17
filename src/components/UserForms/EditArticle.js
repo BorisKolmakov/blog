@@ -1,6 +1,8 @@
 import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import { itemList, signIn } from '../Route/Route'
+
 import CreateArticle from './CreateArticle'
 
 const EditArticle = () => {
@@ -12,10 +14,10 @@ const EditArticle = () => {
   const defaultValues = { title, description, body, tags }
 
   if (!localStorage.getItem('token')) {
-    return <Navigate to="/sign-in" />
+    return <Navigate to={`${signIn}`} />
   }
   if (article.author.username !== username) {
-    return <Navigate to="/articles" />
+    return <Navigate to={`${itemList}`} />
   }
   return <CreateArticle edit={true} defaultValues={defaultValues} />
 }

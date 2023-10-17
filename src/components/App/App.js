@@ -9,6 +9,7 @@ import Profile from '../UserForms/Profile'
 import CreateArticle from '../UserForms/CreateArticle'
 import EditArticle from '../UserForms/EditArticle'
 import NotFound from '../NotFound/NotFound'
+import { itemList, article, signIn, signUp, profile, newArticle, editArticle, notFound } from '../Route/Route'
 
 import classes from './App.module.scss'
 
@@ -19,14 +20,14 @@ const App = () => {
       <main className={classes.content}>
         <Routes>
           <Route index element={<ItemList />} />
-          <Route path="/articles" element={<ItemList />} />
-          <Route path="/articles/:slug" element={<Article />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/new-article" element={<CreateArticle />} />
-          <Route path="/articles/:slug/edit" element={<EditArticle />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path={itemList} element={<ItemList />} />
+          <Route path={article} element={<Article />} />
+          <Route path={signIn} element={<SignIn />} />
+          <Route path={signUp} element={<SignUp />} />
+          <Route path={profile} element={<Profile />} />
+          <Route path={newArticle} element={<CreateArticle />} />
+          <Route path={editArticle} element={<EditArticle />} />
+          <Route path={notFound} element={<NotFound />} />
         </Routes>
       </main>
     </div>

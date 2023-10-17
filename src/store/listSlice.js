@@ -6,6 +6,7 @@ const initialState = {
   articles: [],
   total: 0,
   loading: true,
+  error: null,
 }
 
 const listSlice = createSlice({
@@ -21,8 +22,10 @@ const listSlice = createSlice({
       state.total = action.payload.articlesCount
       state.loading = false
     })
-    builder.addCase(fetchArticles.rejected, (state) => {
-      state.loading = true
+    builder.addCase(fetchArticles.rejected, (state, action) => {
+      console.log(action, 'action')
+      state.loading = false
+      state.error = action.error
     })
   },
 })

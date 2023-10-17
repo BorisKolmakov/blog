@@ -1,0 +1,8 @@
+export const itemList = '/articles'
+export const article = '/articles/:slug'
+export const signIn = '/sign-in'
+export const signUp = '/sign-up'
+export const profile = '/profile'
+export const newArticle = '/new-article'
+export const editArticle = '/articles/:slug/edit'
+export const notFound = '/*'

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 
 import { fetchRegistration, fetchArticles } from '../../service/platformAPI'
+import { itemList } from '../Route/Route'
 
 import classes from './UserForms.module.scss'
 
@@ -25,17 +26,18 @@ const SignUp = () => {
 
   useEffect(() => {
     if (error) {
-      const errorName = Object.keys(error)[0]
-      if (errorName === 'username') {
-        setError('username', { type: 'custom', message: 'Имя пользоватля уже существует' })
-        if (errorName === 'email') {
+      Object.keys(error).map((item) => {
+        if (item === 'username') {
+          setError('username', { type: 'custom', message: 'Имя пользоватля уже существует' })
+        }
+        if (item === 'email') {
           setError('email', { type: 'custom', message: 'Электронная почта уже существует' })
         }
-      }
+      })
     }
     if (!error && isLoggedIn) {
       dispatch(fetchArticles(0))
-      navigate('/articles')
+      navigate(`${itemList}`)
     }
   }, [error, isLoggedIn])
 
