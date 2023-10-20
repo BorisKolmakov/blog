@@ -1,1 +1,1 @@
-https://blog-boriskolmakov-gmailcom.vercel.app/
+https://blog-boriskolmakov-gmailcom.vercel.app
