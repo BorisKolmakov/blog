@@ -164,7 +164,6 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
       'Content-Type': 'application/json',
     },
   })
-  console.log(res.data, 'fetchUserApi')
   return res.data
 })
 
@@ -180,7 +179,6 @@ export const updateUser = createAsyncThunk('user/updateUser', async (data, { rej
         },
       }
     )
-    console.log(res.data, 'updateUserApi')
     return res.data
   } catch (err) {
     return rejectWithValue(err.response.data.errors)

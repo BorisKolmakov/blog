@@ -28,7 +28,9 @@ const LikeIcon = ({ favorited, slug, count }) => {
   }
 
   if (error) {
-    return <NotFound message={error.message} code={error.code} />
+    if (!error.username) {
+      return <NotFound message={error.message} code={error.code} />
+    }
   }
 
   return (

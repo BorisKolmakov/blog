@@ -28,8 +28,8 @@ const userSlice = createSlice({
       state.isLoggedIn = true
     })
     builder.addCase(fetchRegistration.rejected, (state, action) => {
+      console.log(action.payload, 'registration Error')
       state.error = action.payload
-      state.error = action.error
     })
 
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
@@ -42,7 +42,6 @@ const userSlice = createSlice({
     })
 
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log(action.payload.user, 'fetchUser')
       state.user = action.payload.user
       state.isLoggedIn = true
       state.loading = false
