@@ -31,7 +31,9 @@ const Item = ({ article, isFull }) => {
   }
 
   if (error) {
-    return <NotFound message={error.message} code={error.code} />
+    if (!error.username) {
+      return <NotFound message={error.message} code={error.code} />
+    }
   }
 
   return (
